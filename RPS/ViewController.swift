@@ -15,6 +15,8 @@ class ViewController: UIViewController,AVAudioPlayerDelegate  {
   @IBOutlet weak var resultlabel: UILabel!
   
   var jankenponPlayer:AVAudioPlayer!
+  var beforeAnswerNumber:UInt32 = 3;
+  var newAnswerNumber:UInt32 = 0
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -35,14 +37,19 @@ class ViewController: UIViewController,AVAudioPlayerDelegate  {
     resultlabel.isHidden = true
     image.isHidden = true
     jankenponPlayer.play()
+//    print(newAnswerNumber)
+//    print(beforeAnswerNumber)
   }
   
   func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
     image.isHidden = false
     resultlabel.isHidden = false
-    var newAnserNumber:UInt32 = 0
-    newAnserNumber=arc4random_uniform(3)
-    switch newAnserNumber{
+    newAnswerNumber = arc4random_uniform(3)
+    while(newAnswerNumber == beforeAnswerNumber){
+      newAnswerNumber = arc4random_uniform(3)
+    }
+    beforeAnswerNumber = newAnswerNumber
+    switch newAnswerNumber{
       case 0:
         image.image = UIImage(named: "gu")
         resultlabel.text = "グー"
